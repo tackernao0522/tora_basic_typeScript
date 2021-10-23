@@ -26,11 +26,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-stages"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
-    "src/**/*.{js.ts}": [
+    "src/**/*.{js,ts}": [
       "npm run lint-fix"
     ]
   }
