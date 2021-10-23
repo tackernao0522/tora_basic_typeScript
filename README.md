@@ -118,3 +118,42 @@ module.exports = {
 ## ESLint&Prettierが起動する流れ
 
 `.ts` (git commit)=> `husky` (pre-commit hook)=> `lint-stages` (チェック&整形)=> `github`<br>
+
+## 型推論と明示的な型定義
+
++ TypeScriptは型を推論する<br>
++ 型アノテーションを使うことで明示的な型を定義する
+
+```
+const name = 'Torahack' // ①string型と推論される
+const name: string = 'Torahack' // ②明示的にstring型と定義することもできる
+// ちなみにESLintのfixを行うと、わざわざ型アノテーションする必要がないと判断されて
+// ②が①のように修正される
+```
+
+## プリミティブ型
+
++ string : 全ての文字列を扱う型<br>
++ number : 整数、浮動小数点数、整数、負数、Infinity(無限大)、NaN(非数)など全ての数値を扱う型<br>
++ boolean : trueとfalseの2つの値を扱う型<br>
+
+```
+const name: string = 'Torahack'
+const age: number = 28
+const isSingle: boolean = true
+
+// 判定式の結果も代入できる
+const isOver20: boolean = age >= 20
+```
+
+## 存在しないことを表現する型
+
++ null : 値が欠如していることを表す<br>
++ undefined : 初期化されておらず値が割り当てられていないことを表す<br>
++ できる限りundefinedを使う<br>
+
+## TypeScriptはanyを回避するゲーム
+
++ any : どんな型でも許容する = 全く安全ではない<br>
++ unknown : どんな型になるのか不明<br>
++ unknownは代入した値によって型が変化する<br>
