@@ -157,3 +157,97 @@ const isOver20: boolean = age >= 20
 + any : どんな型でも許容する = 全く安全ではない<br>
 + unknown : どんな型になるのか不明<br>
 + unknownは代入した値によって型が変化する<br>
+
+## 関数で使われる特別な型
+
++ void : return文を持たない関数の戻り値<br>
+
+```
+const logMessage = (message: string): void => {
+  console.log('Function basic sample 1:', message)
+}
+```
+
++ never : 決して戻ることのない関数の戻り値
+
+```
+const alwaysThrowError = (message: string): never => {
+  throw new Error(messege)
+}
+```
+
+## 関数はどのように型定義するのか
+
+### 用語の整理
+
+1. パラメーター : 関数宣言時に渡される値(仮パラメーター(仮引数))<br>
+2. 引数 : 関数を呼び出すときに渡す値(実パラメーター(実引数))<br>
+3. 戻り値 : 関数が返す値
+
+```
+const logMessage = (message: string): void => {
+  console.log('Function basic samaple 1:', message)
+}
+
+logMessage('Hello TypeScript!')
+```
+
+## オプションとデフォルト
+
+### オブションパラメーター
+
+ + パラメーターの最後に記述する<br>
+ + オプショナルを表す ? をつける<br>
+
+```
+const isUserSignIn = (userId: string, username?: string): boolean => { // usernameはあってもなくても良いという意味
+  // 省略
+}
+```
+
+### デフォルトパラメーター
+ + パラメーターの順序は関係なく記述できる<br>
+ + =で指定する<br>
+
+```
+const isUserSignIn2 = (
+  userId: string,
+  username = 'NO NAME' // 型推論される
+): boolean => { // 省略 }
+```
+
+## 可変長引数に型をつける
+
+### 可変長引数とは？
+
+ + 関数呼び出しの際に引数の数を幾つ渡してもOK<br>
+ + 全く型安全ではない x<br>
+
+### レストパラメーター
+
+ + パラメーターに...を用いることで型定義できる ◯<br>
+ + パラメータの最後に1つだけ指定できる<br>
+
+```
+const sumPrice = (...price: number[]): number => {
+  // priceを使った処理
+}
+```
+
+## 呼び出しシグネチャ
+
++ どのような関数なのかを表現する型定義<br>
++ 省略記法はアロー関数と似た形<br>
++ 完全な記法はオブジェクトと似た形<br>
+
+```
+type LogMessage = (message: string) => void
+
+type FullLogMessage = {
+  (message: string): void
+}
+
+const logMessage: LogMessage = (message) => {
+  console.log('Function basic sample 5:', message)
+}
+```
