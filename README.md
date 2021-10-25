@@ -251,3 +251,107 @@ const logMessage: LogMessage = (message) => {
   console.log('Function basic sample 5:', message)
 }
 ```
+
+## object型に意味はない
+
+### object型はobjectであることを伝えるだけ
+
+```
+const a: object = {
+  name: 'Torahack',
+  age: 28
+}
+a.name // aというobjectにはnameというプロパティがないとエラーが出る
+```
+
+### オブジェクトリテラル記法を使おう
+
++ 構造を定義<br>
++ 各プロパティに型<br>
+
+```
+let country: {
+  language: string
+  name: string
+} = {
+  language: 'Japanese',
+  name: 'Japan'
+}
+```
+
+## 特別なプロパティを扱う
+
++ オプショナル(?)のついたプロパティはあってもなくてもOK<br>
++ readonlyのついたプロパティは上書きできない<br>
+
+```
+let torahack: {
+  age: number
+  lastName: string
+  readonly firstName: string
+  gender?: string
+} = {
+  age: 28,
+  lastName: 'Yamada',
+  firstName: 'Tarou'
+}
+
+torahack.gender = 'male' // 後から追加できる
+torahack.lastName = 'Kamado' // 上書きできる
+torahack.firstName = 'Tanjiro' // 上書き不可
+```
+## オブジェクトの柔軟な型定義
+
+### インデックスシグネチャ
+
++ オブジェクトが複数のプロパティを持つ可能性を示す<br>
++ [key: T]: Uのように定義する <br>
++ keyはstringかnumberのみ
+
+```
+const capitals: {
+  [countryName: string]: string
+} = {
+  Japan: 'Tokyo',
+  Korea: 'Seoul'
+}
+capitals.China = 'Beijing'
+capitals.Canada = 'Ottawa'
+```
+
+## 型エイリアスで型定義を再利用
+
+### 型エイリアスとは
+
++ typeを使って、型に名前をつけて宣言できる<br>
++ 同じ型を何度も定義する必要がない(再利用)<br>
++ 型に名前をつけることで変数の役割を明確化<br>
+
+```
+type Country = {
+  capital: string
+  language: string
+  name: string
+}
+
+const japan: Country = {
+  capital: 'Tokyo',
+  language: 'Japanese',
+  name: 'Japan'
+}
+```
+
+## 合併型(union)と交差型(intersection)
+
+### 合併型
+
+typeA | typeB<br>
+
+### 交差型
+
+typeA & typeB<br>
+
++ 合併型 : 型Aか型Bどちらかの型を持つ<br>
++ 交差型 : 型Aと型B両方の型を持つ<br>
+
+交差型は「AとBに共通する型」ではない<br>
