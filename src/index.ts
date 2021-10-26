@@ -39,7 +39,13 @@
 // logMessage7('Mieko')
 
 // 05.オブジェクトの型定義
-import objectSample from './object/object'
-import typeAliasSamaple from './object/alias'
-objectSample()
-typeAliasSamaple()
+// import objectSample from './object/object'
+// import typeAliasSamaple from './object/alias'
+// objectSample()
+// typeAliasSamaple()
+
+// 06.配列とタプルの型定義
+import arraySample from './array/array'
+import tupleSample from './array/tuple'
+arraySample()
+tupleSample()
