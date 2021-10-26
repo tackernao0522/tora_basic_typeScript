@@ -355,3 +355,80 @@ typeA & typeB<br>
 + 交差型 : 型Aと型B両方の型を持つ<br>
 
 交差型は「AとBに共通する型」ではない<br>
+
+## 配列に秩序をもたらす型定義
+
+### 配列の要素として持つ値の型を定義できる
+
+```
+const colord: string[] = ['red', 'blue']
+colors.push('yellow') // OK
+colors.push(123) // NG
+```
+
+### 型定義方法 : T[] と Array<T> は同義
+
+```
+const odd: number[] = [1, 3, 5]
+const even: Array<number> = [2, 4, 6]
+```
+
+### 合併型も使える
+
+```
+const ids: (string | number)[] = ["ABC", 123]
+ids.push("DEF") // OK
+ids.push(456) // OK
+```
+
+## 配列の型推論
+
+### アノテーションしなくても型推論される
+
+```
+const generateSomeArray = () => {
+  const _someArray = []   // any[]
+  _someArray.push(123)    // number[]として推論される
+  _someArray.push("ABC")  // (string | number)[]として推論される
+  return _someArray
+}
+
+const someArray = generateSomeArray()
+someArray.push(true) // NG
+```
+
+## 厳格な配列 = タプル
+
+### タプルは配列の各要素の数と型を定義できる
+
+```
+let response: [number, string] = [200, "OK"]
+response = [400, "Bad Request", "Email parameter is missing"] // エラー
+response = ["400", "Bad Request"] // エラー
+```
+
+### 可変長 (レストパラメーター)も使える
+
+```
+const girlfriends: [string, ...string[]] = ["Kana", "Miku", "Keiko"]
+```
+
+## イミュータブルな配列
+
+### JavaScriptの配列はconstで宣言してもミュータブル(書き換え可)
+
+```
+const mutableNumbers: number[] = [1, 2, 3]
+mutableNumbers[2] = 4
+```
+
+### readonlyでイミュータブル（書き換え不可)な配列/タプルを作れる
+
+```
+const commands: readonly string[] = ["git add", "git commit", "git push"]
+commands.push("git fetch") // 追加不可
+commands[2] == "git pull" // 代入不可
+
+const numbers: ReadonlyArray<number> = [1, 2, 3]
+const names: Readonly<string[]> = ["Trou", "Kazu"]
+```
