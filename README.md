@@ -632,3 +632,93 @@ class Narikin extends Fu {
   }
 }
 ```
+
+## Type AliasとInterfaceの誤読
+
+### 型エイリアス(type)の方が機能が少ない
+  2021年時点のバージョンでは大差なし<br>
+
+### 全てのソフトウェアは拡張的であるべきなのでinterfaceを使うべき
+ 本当にそうか？<br>
+ ライブラリ...不特定多数が利用するので拡張性を持つべき<br>
+ アプリケーション...全ての型が拡張性を持つとバグを生む<br>
+
+## Interfaceの基本用法と宣言のマージ
+
++ interface宣言子で定義<br>
++ Type Aliasと違って 「=」は不要<br>
+
+```
+interface Bread {
+  calories: number
+}
+```
+
++ 同名のinterfaceを宣言すると型が追加(マージ)される<br>
++ 宣言のマージ : 同じ名前を共有する複数の宣言を自動的に結合<br>
+
+```
+interface Bread {
+  type: string
+}
+
+const francePan: Bread = {
+  calories: 350,
+  type: 'hard'
+}
+```
+
+## Interfaceの拡張
+
++ extendsを使うことで継承したサブインターフェースを作れる<br>
++ Type Aliasをextendsすることもできる<br>
+
+```
+interface Book {
+  page: number
+  title: string
+}
+
+interface Magazine extends Book {
+  cycle: 'daily | 'weekly' | 'monthly' | 'yearly'
+}
+
+const jump: Magazine = {
+  cycle: 'weekly',
+  page: 300,
+  title: '週刊少年ジャンプ'
+}
+```
+
+## Interfaceでclassに型を定義できる
+
++ implementsを使ってclassに型を定義できる<br>
+
+```
+interface Book {
+  page: number
+  titile: string
+}
+
+class Comic implements Book {
+  page: number;
+  title: string;
+
+  constructor(page: number, title: string) {
+    this.page = page
+    this.title = title
+  }
+}
+
+const popularComit = new Comic(200, "鬼滅の刃")
+```
+
+## Type AliasとInterFaceの違いまとめ
+||Type Alias|Interface|
+|---|----|-----|
+|用途|複数の場所で再利用する型に名前をつけるため|オブジェクト・クラス・関数の構造を定義するため|
+|拡張性|同名のtypeを宣言するとエラー|同名のinterfaceを宣言するとマージされる(宣言のマージ)|
+|継承|継承はできない 交差型で新しい型エイリアスを作る|extendsによる継承ができる|
+|使用できる型|オブジェクトや関数以外のプリミティブ、配列、タプルも宣言可能|オブジェクトと関数の型のみ宣言できる|
+|考慮事項|拡張しにくい不便さがある|拡張できることによりバグを生む可能性|
+|いつ使う|アプリ開発ではType Alias|ライブラリ開発ではInterface|
