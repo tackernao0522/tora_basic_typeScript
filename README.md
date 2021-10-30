@@ -722,3 +722,92 @@ const popularComit = new Comic(200, "鬼滅の刃")
 |使用できる型|オブジェクトや関数以外のプリミティブ、配列、タプルも宣言可能|オブジェクトと関数の型のみ宣言できる|
 |考慮事項|拡張しにくい不便さがある|拡張できることによりバグを生む可能性|
 |いつ使う|アプリ開発ではType Alias|ライブラリ開発ではInterface|
+
+## 非同期処理とは
+
++ 通信が発生する処理で起きる<br>
+ - Web APIで叩く<br>
+ - データベースへクエリを投げる<br>
+
++ 実行完了を待たずに次の処理へ進む<br>
++ JavaScriptはシングルスレッドの言語<br>
+
+ * 非同期処理APIにより効率よく処理を行うことが可能<br>
+
+## 非同期処理は一長一短
+
+`複数の処理を並行して効率よく実行できる`<br>
+  重い処理や時間のかかる通信中にユーザーに別の操作を許可するなど<br>
+
+`制御が難しい`<br>
+ 処理が実行中なのか実行完了したのかトレースしにくい<br>
+
+`どう対処すべき?`<br>
+  ->Promiseやasync/awaitで非同期処理を同期的に制御する<br>
+  ->型をつけることでわかりやすくする<br>
+
+## Promise型で実行完了後の値を定義する
+
+### 非同期処理の実行結果はPromise<string>のように定義できる
+
+```
+type FetchProfile = () => Promise<Profile | null>
+
+const fetchProfile: FetchProfile = () => {
+  // 非同期処理を行い、最終的にProfileかnullを返す
+}
+```
+
+<h5>Promiseの状態</h5><br>
+
+```
+Promise<pending> : 初期状態/実行中
+Promise<fulfilled> : 処理が成功して完了した状態
+Promise<rejected> : 処理が失敗して完了した状態
+```
+
+通常のPromise src/asynchronous/promise.ts
+
+```
+export default function promiseSample() {
+  const url = "https://api.github.com/users/tackernao0522"
+
+  type Profile = {
+    login: string
+    id: number
+  }
+
+  type FetchProfile = () => Promise<Profile | null>
+
+  const fetchProfile: FetchProfile = () => {
+    return new Promise((resolve, reject) => {
+      return fetch(url)
+        .then((res) => {
+          // レスポンスのBodyをJSONで読み取った結果を返す
+          res.json()
+            .then((json: Profile) => {
+              console.log("AsyncChronous Promise Sample 1:", json)
+              resolve(json)
+            })
+            .catch((error) => {
+              console.log(error)
+              reject(null)
+            })
+          })
+          .catch((error) => {
+            console.error(error)
+            reject(null)
+          })
+        })
+      }
+      fetchProfile()
+      .then((profile: Profile | null) => {
+        if (profile) {
+      console.log("AsyncChronous Promise Sample 2:", profile)
+    }
+  })
+  .catch(() => {
+
+  })
+}
+```
